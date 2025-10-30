@@ -32,19 +32,19 @@ All tasks are organized into **sprints**.
 ### Option 2: Using **psql**
 1. Open your terminal.
 2. Login to PostgreSQL:
-   ```bash
+   ```sql
    psql -U postgres
 
 
 
 ## Sprint 1: Project Setup
 ### Create a new database
-~~~bash
+~~~sql
 CREATE DATABASE LibraryDB;
 ~~~
 ### Create the required tables: Books, Authors, Patrons
 #### Create Authors table
-~~~bash
+~~~sql
 CREATE TABLE authors (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE authors (
 ~~~
 
 #### Create Books table
-~~~bash
+~~~sql
 CREATE TABLE books (
     id SERIAL PRIMARY KEY,
     title VARCHAR(150) NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE books (
 ~~~
 
 #### Create Patrons table
-~~~bash
+~~~sql
 CREATE TABLE patrons (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE patrons (
 
 ## Sprint 2: Insert Data
 #### Insert sample authors
-~~~bash
+~~~sql
 INSERT INTO authors (id, name, nationality, birth_year, death_year) VALUES
 (1, 'George Orwell', 'British', 1903, 1950),
 (2, 'Harper Lee', 'American', 1926, 2016),
@@ -93,7 +93,7 @@ INSERT INTO authors (id, name, nationality, birth_year, death_year) VALUES
 ~~~
 
 #### Insert sample books
-~~~bash
+~~~sql
 INSERT INTO books (id, title, author_id, genres, published_year, available) VALUES
 (1, '1984', 1, ARRAY['Dystopian', 'Political Fiction'], 1949, TRUE),
 (2, 'To Kill a Mockingbird', 2, ARRAY['Southern Gothic', 'Bildungsroman'], 1960, TRUE),
@@ -108,7 +108,7 @@ INSERT INTO books (id, title, author_id, genres, published_year, available) VALU
 ~~~
 
 #### Insert sample patrons
-```bash
+```sql
 INSERT INTO patrons (id, name, email, borrowed_books) VALUES
 (1, 'Alice Johnson', 'alice@example.com', ARRAY[]::INT[]),
 (2, 'Bob Smith', 'bob@example.com', ARRAY[1, 2]),
@@ -123,84 +123,84 @@ INSERT INTO patrons (id, name, email, borrowed_books) VALUES
 ```
 ## Sprint 3: Read Operations (Queries)
 #### Get all books
-```bash
+```sql
 SELECT * FROM books;
 ```
 
 #### Get a single book by title
-```bash
+```sql
 SELECT * FROM books WHERE title = '1984';
 ```
 
 #### Get all books by a specific author 
-```bash
+```sql
 SELECT b.* FROM books b
 JOIN authors a ON b.author_id = a.id
 WHERE a.name = 'George Orwell';
 ```
 
 #### Get all available books
-```bash
+```sql
 SELECT * FROM books WHERE available = TRUE;
 ```
 
 ## Sprint 4: Update Operations
 #### Mark a book as borrowed (set available = FALSE)
-```bash
+```sql
 UPDATE books
 SET available = FALSE
 WHERE id = 1;
 ```
 #### Add a new genre to an existing book
-```bash
+```sql
 UPDATE books
 SET genres = array_append(genres, 'Classic')
 WHERE title = 'The Great Gatsby';
 ```
 #### Add a borrowed book to a patron’s record
-```bash
+```sql
 UPDATE patrons
 SET borrowed_books = array_append(borrowed_books, 1)
 WHERE name = 'Alice Johnson';
 ```
 ## Sprint 5: Delete Operations
 #### Delete a book by title
-```bash
+```sql
 DELETE FROM books WHERE title = 'The Hobbit';
 ```
 #### Delete an author by ID
-```bash
+```sql
 DELETE FROM authors WHERE id = 3;
 ```
 ## Sprint 6: Advanced Queries
 #### Find books published after 1950
-```bash
+```sql
 SELECT * FROM books 
 WHERE published_year > 1950;
 ```
 #### Find all American authors
-```bash
+```sql
 SELECT * FROM authors
 WHERE nationality;
 ```
 #### Set all books as available
-```bash
+```sql
 UPDATE books
 SET available = true;
 ```
 #### Find all books that are available AND published after 1950
-```bash
+```sql
 SELECT * FROM books
 WHERE available = true 
 AND  published_year > 1950;
 ```
 #### Find authors whose names contain "George"
-```bash
+```sql
 SELECT * FROM authors
 WHERE name ILIKE ('george%')
 ```
 #### Increment the published year 1869 by 1
-```bash
+```sql
 UPDATE books 
 SET published_year = 1870
 WHERE id = 8;
